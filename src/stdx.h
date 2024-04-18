@@ -46,8 +46,14 @@ do {                                                                            
         STDX_ASSERT((da_ptr)->items != NULL);                                                 \
     }                                                                                         \
     item_type *__stdx_da_tmp__ = &((item_type*)(da_ptr)->items)[(da_ptr)->len];               \
-    *__stdx_da_tmp__ = *item_ptr;                                                             \
+    *__stdx_da_tmp__ = *(item_ptr);                                                           \
     (da_ptr)->len += 1;                                                                       \
+} while (0)
+
+#define stdx_da_append_many(da_ptr, items, item_type, items_count)         \
+do {                                                                       \
+    for (size_t __stdx_i__ = 0; __stdx_i__ < (items_count); __stdx_i__++)  \
+        stdx_da_append((da_ptr), &(items)[__stdx_i__], item_type);         \
 } while (0)
 
 #define stdx_da_get(da_ptr, item_type, idx) \
@@ -60,10 +66,10 @@ do {                                                                            
 
 // Logging
 #define STDX_LOG_ERR(format, ...)   \
-    (void)fprintf("[ERROR] %s: " format, __FUNCTION__, __VA_ARGS__)
+    (void)fprintf(stderr, "[ERROR] %s: " format, __FUNCTION__, __VA_ARGS__)
 
 #define STDX_LOG_INF(format, ...)   \
-    (void)fprintf("[INFO] %s: " format, __FUNCTION__, __VA_ARGS__)
+    (void)fprintf(stderr, "[INFO] %s: " format, __FUNCTION__, __VA_ARGS__)
 
 
 
