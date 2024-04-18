@@ -50,10 +50,10 @@ do {                                                                            
     (da_ptr)->len += 1;                                                                       \
 } while (0)
 
-#define stdx_da_append_many(da_ptr, items, item_type, items_count)         \
-do {                                                                       \
-    for (size_t __stdx_i__ = 0; __stdx_i__ < (items_count); __stdx_i__++)  \
-        stdx_da_append((da_ptr), &(items)[__stdx_i__], item_type);         \
+#define stdx_da_append_many(da_ptr, items, item_type, items_count)          \
+do {                                                                        \
+    for (size_t __stdx_i__ = 0; __stdx_i__ < (items_count); __stdx_i__++)   \
+        stdx_da_append((da_ptr), &(items)[__stdx_i__], item_type);          \
 } while (0)
 
 #define stdx_da_get(da_ptr, item_type, idx) \
