@@ -6,6 +6,11 @@ extern "C" {
 #endif // __cplusplus
 
 
+#define STDX_VERSION_MAJOR  0
+#define STDX_VERSION_MINOR  0
+#define STDX_VERSION_PATCH  1
+#define STDX_VERSION "0.0.1"
+
 
 /**
  * Includes
