@@ -15,12 +15,19 @@ extern "C" {
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
+#include <stdint.h>
 
 
 
 /**
  * Macros and Constants
  */
+
+#if (defined(__LP64__) || defined(_LP64))
+    // #define STDX_WSIZE  64
+    #define STDX_64BIT  1
+#endif
+
 
 #define STDX_MALLOC     malloc
 #define STDX_CALLOC     calloc
@@ -90,12 +97,26 @@ extern "C" {
  * Types
  */
 
-// Dynamic array on stack
+// Dynamic array
 typedef struct __stdx_darr {
     void *items;
     size_t len;
     size_t cap;
 } Stdx_DArr;
+
+typedef uint8_t  u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+#ifdef STDX_64BIT
+typedef uint64_t u64;
+#endif // __x86_64__
+
+typedef int8_t  i8;
+typedef int16_t i16;
+typedef int32_t i32;
+#ifdef STDX_64BIT
+typedef int64_t i64;
+#endif // __x86_64__
 
 
 
@@ -153,7 +174,7 @@ again:
     q = (char*)query;
     while (*s != *q && *s) s++;
     if (*s == '\0')
-        return 0;
+        return NULL;
     while (*s && *q) {
         if (*s == *q) {
             s++;
@@ -218,7 +239,7 @@ Stdx_DArr stdx_parse_long_all(const char *s) {
         num = 0;
         while (*tmp && stdx_is_digit(*tmp)) {
             num *= 10;
-            num += (*tmp - 48);
+            num += ((*tmp) - 48);
             tmp += 1;
         }
 
