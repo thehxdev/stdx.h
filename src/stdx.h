@@ -245,8 +245,6 @@ Stdx_DArr stdx_parse_long_all(const char *s) {
 
         num = (neg) ? (-(num)) : num;
         stdx_da_append(&nums, long, &num);
-
-        tmp += 1;
     }
 
     return nums;
