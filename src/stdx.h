@@ -114,14 +114,14 @@ typedef uint16_t u16;
 typedef uint32_t u32;
 #ifdef STDX_64BIT
 typedef uint64_t u64;
-#endif // __x86_64__
+#endif // STDX_64BIT
 
 typedef int8_t  i8;
 typedef int16_t i16;
 typedef int32_t i32;
 #ifdef STDX_64BIT
 typedef int64_t i64;
-#endif // __x86_64__
+#endif // STDX_64BIT
 
 
 
@@ -133,11 +133,12 @@ char *stdx_strdup(const char *s) {
     if (!s)
         return NULL;
     size_t i = 0;
-    char *tmp = STDX_CALLOC(strlen(s) + 1, sizeof(char));
+    char *tmp = STDX_MALLOC((strlen(s) + 1) * sizeof(char));
     while (s[i]) {
         tmp[i] = s[i];
         i++;
     }
+    tmp[i] = '\0';
     return tmp;
 }
 
@@ -146,11 +147,12 @@ char *stdx_strndup(const char *s, const size_t n) {
     if (!s)
         return NULL;
     size_t i = 0;
-    char *tmp = STDX_CALLOC(n + 1, sizeof(char));
+    char *tmp = STDX_MALLOC((n + 1) * sizeof(char));
     while (s[i] && i < n) {
         tmp[i] = s[i];
         i++;
     }
+    tmp[i] = '\0';
     return tmp;
 }
 
