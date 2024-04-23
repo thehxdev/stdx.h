@@ -1,4 +1,4 @@
-CC ?= clang
+CC ?= cc
 CFLAGS := -std=c99 -Wall -Wextra -Wno-unused-result
 LDFLAGS :=
 
