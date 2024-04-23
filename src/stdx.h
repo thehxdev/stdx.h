@@ -43,11 +43,11 @@ extern "C" {
 #define STDX_ARRAY_LEN(arr) (sizeof((arr))/sizeof((arr)[0]))
 
 #ifndef true
-    #define true 1
+    #define true    1
 #endif // true
 
 #ifndef false
-    #define false 0
+    #define false   0
 #endif // true
 
 
@@ -132,13 +132,17 @@ typedef int64_t i64;
 char *stdx_strdup(const char *s) {
     if (!s)
         return NULL;
+
     size_t i = 0;
     char *tmp = STDX_MALLOC((strlen(s) + 1) * sizeof(char));
+    STDX_ASSERT(tmp != NULL);
+
     while (s[i]) {
         tmp[i] = s[i];
         i++;
     }
     tmp[i] = '\0';
+
     return tmp;
 }
 
@@ -146,13 +150,17 @@ char *stdx_strdup(const char *s) {
 char *stdx_strndup(const char *s, const size_t n) {
     if (!s)
         return NULL;
+
     size_t i = 0;
     char *tmp = STDX_MALLOC((n + 1) * sizeof(char));
+    STDX_ASSERT(tmp != NULL);
+
     while (s[i] && i < n) {
         tmp[i] = s[i];
         i++;
     }
     tmp[i] = '\0';
+
     return tmp;
 }
 
