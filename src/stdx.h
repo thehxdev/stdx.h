@@ -135,7 +135,8 @@ char *stdx_strdup(const char *s) {
 
     size_t i = 0;
     char *tmp = STDX_MALLOC((strlen(s) + 1) * sizeof(char));
-    STDX_ASSERT(tmp != NULL);
+    if (!tmp)
+        goto ret;
 
     while (s[i]) {
         tmp[i] = s[i];
@@ -143,6 +144,7 @@ char *stdx_strdup(const char *s) {
     }
     tmp[i] = '\0';
 
+ret:
     return tmp;
 }
 
@@ -153,7 +155,8 @@ char *stdx_strndup(const char *s, const size_t n) {
 
     size_t i = 0;
     char *tmp = STDX_MALLOC((n + 1) * sizeof(char));
-    STDX_ASSERT(tmp != NULL);
+    if (!tmp)
+        goto ret;
 
     while (s[i] && i < n) {
         tmp[i] = s[i];
@@ -161,6 +164,7 @@ char *stdx_strndup(const char *s, const size_t n) {
     }
     tmp[i] = '\0';
 
+ret:
     return tmp;
 }
 
