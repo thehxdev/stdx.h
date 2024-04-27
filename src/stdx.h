@@ -187,7 +187,7 @@ char *stdx_find_substr(const char *source, const char *query) {
 
 again:
     q = (char*)query;
-    while (*s != *q && *s) s++;
+    while (*s && *s != *q) s++;
     if (*s == '\0')
         return NULL;
     while (*s && *q) {
