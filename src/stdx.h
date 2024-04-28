@@ -40,7 +40,7 @@ extern "C" {
 #define STDX_ASSERT     assert
 #define STDX_FREE       free
 #define STDX_XFREE(p)   do { STDX_FREE((p)); (p) = NULL; } while (0)
-#define STDX_ARRAY_LEN(arr) (sizeof((arr))/sizeof((arr)[0]))
+#define STDX_ARRAY_LEN(arr) (sizeof((arr)) / sizeof((arr)[0]))
 
 #ifndef true
     #define true    1
