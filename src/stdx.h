@@ -29,7 +29,6 @@ extern "C" {
  */
 
 #if (defined(__LP64__) || defined(_LP64))
-    // #define STDX_WSIZE  64
     #define STDX_64BIT  1
 #endif
 
@@ -43,19 +42,19 @@ extern "C" {
 #define STDX_ARRAY_LEN(arr) (sizeof((arr)) / sizeof((arr)[0]))
 
 #ifndef true
-    #define true    1
+    #define true    (1)
 #endif // true
 
 #ifndef false
-    #define false   0
+    #define false   (0)
 #endif // true
 
 
 // Daynamic Array
-#define STDX_DA_DEF_CAP 20
+#define STDX_DA_DEF_CAP (20)
 
 #define stdx_da_new(capacity)    \
-    (Stdx_DArr) { NULL, 0, (capacity > 0) ? capacity : STDX_DA_DEF_CAP }
+    (Stdx_DArr) { NULL, 0, ((capacity) > 0) ? (capacity) : STDX_DA_DEF_CAP }
 
 #define stdx_da_append(da_ptr, item_type, item_ptr)                                             \
     do {                                                                                        \
@@ -75,10 +74,12 @@ extern "C" {
             stdx_da_append((da_ptr), item_type, &(items)[__stdx_i__]);          \
     } while (0)
 
+#define stdx_da_ptr(da_ptr, item_type) ((item_type*)(da_ptr)->items)
+
 #define stdx_da_get(da_ptr, item_type, idx) \
     (STDX_ASSERT((idx) >= 0),               \
     STDX_ASSERT((idx) < ((da_ptr)->len)),   \
-    &((item_type*)(da_ptr)->items)[(idx)])
+    &(stdx_da_ptr((da_ptr), item_type)[(idx)]))
 
 #define stdx_da_free(da) STDX_XFREE((da).items)
 
@@ -122,6 +123,9 @@ typedef int32_t i32;
 #ifdef STDX_64BIT
 typedef int64_t i64;
 #endif // STDX_64BIT
+
+typedef long    ssize;
+typedef unsigned long   usize;
 
 
 
