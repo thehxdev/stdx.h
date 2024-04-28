@@ -1,10 +1,6 @@
 #ifndef STDX_H
 #define STDX_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
 
 #define STDX_VERSION_MAJOR  0
 #define STDX_VERSION_MINOR  0
@@ -274,9 +270,5 @@ Stdx_DArr stdx_parse_long_all(const char *s) {
 }
 
 
-
-#ifdef __cplusplus
-}
-#endif // __cplusplus
 
 #endif // STDX_H
