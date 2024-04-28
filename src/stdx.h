@@ -134,7 +134,7 @@ char *stdx_strdup(const char *s) {
         return NULL;
 
     size_t i = 0;
-    char *tmp = STDX_MALLOC((strlen(s) + 1) * sizeof(char));
+    char *tmp = STDX_MALLOC((strlen(s) + 1) * sizeof(*tmp));
     if (!tmp)
         goto ret;
 
@@ -154,7 +154,7 @@ char *stdx_strndup(const char *s, const size_t n) {
         return NULL;
 
     size_t i = 0;
-    char *tmp = STDX_MALLOC((n + 1) * sizeof(char));
+    char *tmp = STDX_MALLOC((n + 1) * sizeof(*tmp));
     if (!tmp)
         goto ret;
 
