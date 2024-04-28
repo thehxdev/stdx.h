@@ -186,8 +186,8 @@ char *stdx_substr(const char *start, const char *end) {
 
 
 char *stdx_find_substr(const char *source, const char *query) {
-    char *s = (char*)source;
-    char *q;
+    register char *s = (char*)source;
+    register char *q;
 
 again:
     q = (char*)query;
