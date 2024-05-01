@@ -99,13 +99,6 @@
  * Types
  */
 
-// Dynamic array
-typedef struct __stdx_darr {
-    void *items;
-    size_t len;
-    size_t cap;
-} Stdx_DArr;
-
 typedef uint8_t  u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
@@ -122,6 +115,13 @@ typedef int64_t i64;
 
 typedef long    ssize;
 typedef unsigned long   usize;
+
+// Dynamic array
+typedef struct __stdx_darr {
+    void *items;
+    usize len;
+    usize cap;
+} Stdx_DArr;
 
 
 
