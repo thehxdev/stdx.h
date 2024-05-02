@@ -77,7 +77,8 @@
     STDX_ASSERT((idx) < ((da_ptr)->len)),   \
     &(stdx_da_ptr((da_ptr), item_type)[(idx)]))
 
-#define stdx_da_free(da) do { STDX_XFREE((da).items); (da).len = 0; } while (0)
+#define stdx_da_free(da)    \
+    do { STDX_XFREE((da).items); (da).len = 0; } while (0)
 
 
 // Logging
