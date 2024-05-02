@@ -217,7 +217,7 @@ again:
 // Parse first integer value in string
 long stdx_parse_long(const char *s) {
     char *tmp = (char*)s;
-    long num = -1;
+    long num = 0;
     short neg = false;
 
     while (*tmp && !(stdx_is_digit(*tmp))) tmp++;
@@ -227,7 +227,6 @@ long stdx_parse_long(const char *s) {
     if (tmp != s && *(tmp-1) == '-')
         neg = true;
 
-    num = 0;
     while (*tmp && stdx_is_digit(*tmp)) {
         num *= 10;
         num += (*tmp - 48);
