@@ -1,18 +1,72 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <assert.h>
 #include "../src/stdx.h"
 
+
+void test_stdx_parse_long(void);
+void test_stdx_parse_long_all(void);
+
+
 int main(void) {
-    usize i;
-    int ns[5] = { 12, 1, 51, 0, -1 };
-    Stdx_DArr nums = stdx_da_new(10);
-    stdx_da_append_many(&nums, int, ns, 5);
+    test_stdx_parse_long();
+    test_stdx_parse_long_all();
 
-    for (i = 0; i < nums.len; i++)
-        printf("%d ", *stdx_da_get(&nums, int, i));
-    printf("\n");
-
-    stdx_da_free(nums);
+    STDX_LOG_INF("All tests are PASSED!\n", NULL);
     return 0;
+}
+
+
+void test_stdx_parse_long() {
+    long tmp;
+
+    tmp = stdx_parse_long("");
+    STDX_ASSERT(tmp == 0);
+
+    tmp = stdx_parse_long("abcd");
+    STDX_ASSERT(tmp == 0);
+
+    tmp = stdx_parse_long("1");
+    STDX_ASSERT(tmp == 1);
+
+    tmp = stdx_parse_long("-1");
+    STDX_ASSERT(tmp == (-1));
+
+    tmp = stdx_parse_long("abcd-198");
+    STDX_ASSERT(tmp == (-198));
+
+    tmp = stdx_parse_long("abcd198");
+    STDX_ASSERT(tmp == 198);
+
+    tmp = stdx_parse_long("ab875kl");
+    STDX_ASSERT(tmp == 875);
+
+    tmp = stdx_parse_long("foo453bar");
+    STDX_ASSERT(tmp == 453);
+
+    STDX_LOG_INF("stdx_parse_long PASSED...\n", NULL);
+}
+
+
+void test_stdx_parse_long_all(void) {
+    Stdx_DArr tmp;
+
+    tmp = stdx_parse_long_all("");
+    STDX_ASSERT(tmp.len == 0);
+
+    tmp = stdx_parse_long_all("foobar");
+    STDX_ASSERT(tmp.len == 0);
+
+    tmp = stdx_parse_long_all("foo123");
+    STDX_ASSERT(tmp.len == 1 && (*stdx_da_get(&tmp, long, 0)) == 123);
+    stdx_da_free(tmp);
+
+    tmp = stdx_parse_long_all("foo123bar-456abc-1");
+    STDX_ASSERT(tmp.len == 3
+                && (*stdx_da_get(&tmp, long, 0)) == 123
+                && (*stdx_da_get(&tmp, long, 1)) == -456
+                && (*stdx_da_get(&tmp, long, 2)) == -1);
+    stdx_da_free(tmp);
+
+    STDX_LOG_INF("stdx_parse_long_all PASSED...\n", NULL);
 }
