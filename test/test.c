@@ -30,6 +30,7 @@ void test_stdx_darr(void) {
     STDX_ASSERT(tmp.cap == 20);
     STDX_ASSERT(tmp.items == NULL);
 
+    int stat;
     long num = 10;
 
     stdx_da_append(&tmp, long, &num);
@@ -43,8 +44,10 @@ void test_stdx_darr(void) {
     STDX_ASSERT(tmp.len == 0);
     STDX_ASSERT(tmp.items == NULL);
 
-    stdx_da_append_many(&tmp, char, "Hello World!", strlen("Hello World!"));
-    STDX_ASSERT(strcmp(stdx_da_ptr(&tmp, char), "Hello World!") == 0);
+    char *sample = "Hello World!";
+    stdx_da_append_many(&tmp, char, sample, strlen(sample));
+    stat = strcmp(stdx_da_ptr(&tmp, char), sample);
+    STDX_ASSERT(stat == 0);
     stdx_da_free(tmp);
 
     STDX_LOG_INF("%s\n", "PASSED...");
@@ -52,12 +55,14 @@ void test_stdx_darr(void) {
 
 
 void test_stdx_strdup(void) {
+    int stat;
     char *tmp;
     char *sample = "Hello World!";
     size_t sample_len = strlen(sample);
 
     tmp = stdx_strdup(sample);
-    STDX_ASSERT(strcmp(tmp, sample) == 0);
+    stat = strcmp(tmp, sample);
+    STDX_ASSERT(stat == 0);
     STDX_ASSERT(tmp[sample_len] == '\0');
     STDX_XFREE(tmp);
 
