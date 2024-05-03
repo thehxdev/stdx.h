@@ -150,11 +150,11 @@ ret:
 }
 
 
-char *stdx_strndup(const char *s, const size_t n) {
-    if (!s)
+char *stdx_strndup(const char *s, const long n) {
+    if (!s || n <= 0)
         return NULL;
 
-    size_t i = 0;
+    long i = 0;
     char *tmp = STDX_MALLOC((n + 1) * sizeof(*tmp));
     if (!tmp)
         goto ret;
@@ -176,13 +176,7 @@ char *stdx_substr(const char *start, const char *end) {
     //      *start      *end
     //      |-----------|
     //          delta
-
-    size_t delta = 0;
-    if (end < start)
-        return NULL;
-
-    delta = end - start;
-    return stdx_strndup(start, delta);
+    return stdx_strndup(start, (long)(end - start));
 }
 
 
