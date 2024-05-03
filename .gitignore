@@ -1,3 +1,4 @@
 a.out
 compile_flags.txt
 *.o
+*vgcore*
