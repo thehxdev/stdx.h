@@ -52,6 +52,14 @@ void test_stdx_darr(void) {
     STDX_ASSERT(stat == 0);
     stdx_da_free(tmp);
 
+    // Store 2 dynamic arrays into another dynamic array
+    Stdx_DArr tmp2 = stdx_da_new(1);
+    stdx_da_append(&tmp, Stdx_DArr, &tmp2);
+    stdx_da_append(&tmp, Stdx_DArr, &tmp2);
+    STDX_ASSERT((*stdx_da_get(&tmp, Stdx_DArr, 0)).len == 0);
+    STDX_ASSERT((*stdx_da_get(&tmp, Stdx_DArr, 1)).len == 0);
+    stdx_da_free(tmp);
+
     STDX_LOG_INF("%s\n", "PASSED...");
 }
 
