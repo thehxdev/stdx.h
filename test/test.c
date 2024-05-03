@@ -8,6 +8,7 @@
 void test_stdx_darr(void);
 void test_stdx_strdup(void);
 void test_stdx_strndup(void);
+void test_numeric_types(void);
 void test_stdx_parse_long(void);
 void test_stdx_parse_long_all(void);
 
@@ -16,6 +17,7 @@ int main(void) {
     test_stdx_darr();
     test_stdx_strdup();
     test_stdx_strndup();
+    test_numeric_types();
     test_stdx_parse_long();
     test_stdx_parse_long_all();
 
@@ -88,6 +90,31 @@ void test_stdx_strndup(void) {
     STDX_ASSERT(tmp[6] == '\0');
     STDX_XFREE(tmp);
 
+
+    STDX_LOG_INF("%s\n", "PASSED...");
+}
+
+
+void test_numeric_types(void) {
+    STDX_ASSERT(sizeof(u8) == 1);
+    STDX_ASSERT(sizeof(i8) == 1);
+
+    STDX_ASSERT(sizeof(u16) == 2);
+    STDX_ASSERT(sizeof(i16) == 2);
+
+    STDX_ASSERT(sizeof(u32) == 4);
+    STDX_ASSERT(sizeof(i32) == 4);
+
+#ifdef STDX_64BIT
+    STDX_ASSERT(sizeof(u64) == 8);
+    STDX_ASSERT(sizeof(i64) == 8);
+
+    STDX_ASSERT(sizeof(usize) == 8);
+    STDX_ASSERT(sizeof(ssize) == 8);
+#else // else STDX_64BIT
+    STDX_ASSERT(sizeof(usize) == 4);
+    STDX_ASSERT(sizeof(ssize) == 4);
+#endif // STDX_64BIT
 
     STDX_LOG_INF("%s\n", "PASSED...");
 }
