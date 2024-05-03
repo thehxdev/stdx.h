@@ -6,16 +6,20 @@
 
 
 void test_stdx_darr(void);
+void test_stdx_strdup(void);
+void test_stdx_strndup(void);
 void test_stdx_parse_long(void);
 void test_stdx_parse_long_all(void);
 
 
 int main(void) {
     test_stdx_darr();
+    test_stdx_strdup();
+    test_stdx_strndup();
     test_stdx_parse_long();
     test_stdx_parse_long_all();
 
-    STDX_LOG_INF("All tests are PASSED!\n", NULL);
+    STDX_LOG_INF("%s\n", "All tests are PASSED!");
     return 0;
 }
 
@@ -43,7 +47,44 @@ void test_stdx_darr(void) {
     STDX_ASSERT(strcmp(stdx_da_ptr(&tmp, char), "Hello World!") == 0);
     stdx_da_free(tmp);
 
-    STDX_LOG_INF("PASSED...\n", NULL);
+    STDX_LOG_INF("%s\n", "PASSED...");
+}
+
+
+void test_stdx_strdup(void) {
+    char *tmp;
+    char *sample = "Hello World!";
+    size_t sample_len = strlen(sample);
+
+    tmp = stdx_strdup(sample);
+    STDX_ASSERT(strcmp(tmp, sample) == 0);
+    STDX_ASSERT(tmp[sample_len] == '\0');
+    STDX_XFREE(tmp);
+
+    tmp = stdx_strdup(NULL);
+    STDX_ASSERT(tmp == NULL);
+
+    STDX_LOG_INF("%s\n", "PASSED...");
+}
+
+
+void test_stdx_strndup(void) {
+    char *tmp;
+    char *sample = "Hello World!";
+
+    tmp = stdx_strndup(sample, -1);
+    STDX_ASSERT(tmp == NULL);
+
+    tmp = stdx_strndup(NULL, 1);
+    STDX_ASSERT(tmp == NULL);
+
+    tmp = stdx_strndup(sample, 5);
+    STDX_ASSERT(strcmp(tmp, "Hello") == 0);
+    STDX_ASSERT(tmp[6] == '\0');
+    STDX_XFREE(tmp);
+
+
+    STDX_LOG_INF("%s\n", "PASSED...");
 }
 
 
@@ -74,7 +115,7 @@ void test_stdx_parse_long() {
     tmp = stdx_parse_long("foo453bar");
     STDX_ASSERT(tmp == 453);
 
-    STDX_LOG_INF("PASSED...\n", NULL);
+    STDX_LOG_INF("%s\n", "PASSED...");
 }
 
 
@@ -98,5 +139,5 @@ void test_stdx_parse_long_all(void) {
                 && (*stdx_da_get(&tmp, long, 2)) == -1);
     stdx_da_free(tmp);
 
-    STDX_LOG_INF("PASSED...\n", NULL);
+    STDX_LOG_INF("%s\n", "PASSED...");
 }
