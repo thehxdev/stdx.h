@@ -8,16 +8,20 @@
 void test_stdx_darr(void);
 void test_stdx_strdup(void);
 void test_stdx_strndup(void);
-void test_numeric_types(void);
+void test_stdx_numeric_types(void);
 void test_stdx_parse_long(void);
 void test_stdx_parse_long_all(void);
 
 
 int main(void) {
+#ifdef STDX_64BIT
+    STDX_LOG_INF("%s\n", "64-bit machine detected...");
+#endif
+
     test_stdx_darr();
     test_stdx_strdup();
     test_stdx_strndup();
-    test_numeric_types();
+    test_stdx_numeric_types();
     test_stdx_parse_long();
     test_stdx_parse_long_all();
 
@@ -103,7 +107,7 @@ void test_stdx_strndup(void) {
 }
 
 
-void test_numeric_types(void) {
+void test_stdx_numeric_types(void) {
     STDX_ASSERT(sizeof(u8) == 1);
     STDX_ASSERT(sizeof(i8) == 1);
 
