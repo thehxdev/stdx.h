@@ -29,40 +29,37 @@ int main(void) {
     return 0;
 }
 
-
 void test_stdx_darr(void) {
-    Stdx_DArr tmp = stdx_da_new(20);
+    intlist_t tmp = {0};
     STDX_ASSERT(tmp.len == 0);
-    STDX_ASSERT(tmp.cap == 20);
+    STDX_ASSERT(tmp.cap == 0);
     STDX_ASSERT(tmp.items == NULL);
 
     int stat;
     long num = 10;
 
-    stdx_da_append(&tmp, long, &num);
-    STDX_ASSERT((*stdx_da_get(&tmp, long, 0)) == 10);
+    DARRAY_APPEND(&tmp, &num);
+    STDX_ASSERT((*DARRAY_GET(&tmp, 0)) == 10);
 
     num = 873;
-    stdx_da_append(&tmp, long, &num);
-    STDX_ASSERT((*stdx_da_get(&tmp, long, 1)) == 873);
+    DARRAY_APPEND(&tmp, &num);
+    STDX_ASSERT((*DARRAY_GET(&tmp, 1)) == 873);
 
-    stdx_da_free(tmp);
-    STDX_ASSERT(tmp.len == 0);
-    STDX_ASSERT(tmp.items == NULL);
+    STDX_XFREE(*(&tmp.items));
+
+
+    charlist_t tmp2 = {0};
+    STDX_ASSERT(tmp2.len == 0);
+    STDX_ASSERT(tmp2.cap == 0);
+    STDX_ASSERT(tmp2.items == NULL);
 
     char *sample = "Hello World!";
-    stdx_da_append_many(&tmp, char, sample, strlen(sample));
-    stat = strcmp(stdx_da_ptr(&tmp, char), sample);
-    STDX_ASSERT(stat == 0);
-    stdx_da_free(tmp);
+    for (size_t i = 0; i < strlen(sample); i++)
+        DARRAY_APPEND(&tmp2, &sample[i]);
 
-    // Store 2 dynamic arrays into another dynamic array
-    Stdx_DArr tmp2 = stdx_da_new(1);
-    stdx_da_append(&tmp, Stdx_DArr, &tmp2);
-    stdx_da_append(&tmp, Stdx_DArr, &tmp2);
-    STDX_ASSERT((*stdx_da_get(&tmp, Stdx_DArr, 0)).len == 0);
-    STDX_ASSERT((*stdx_da_get(&tmp, Stdx_DArr, 1)).len == 0);
-    stdx_da_free(tmp);
+    stat = strcmp(tmp2.items, sample);
+    STDX_ASSERT(stat == 0);
+    STDX_XFREE(*(&tmp2.items));
 
     STDX_LOG_INF("%s\n", "PASSED...");
 }
@@ -164,7 +161,7 @@ void test_stdx_parse_long() {
 
 
 void test_stdx_parse_long_all(void) {
-    Stdx_DArr tmp;
+    intlist_t tmp;
 
     tmp = stdx_parse_long_all("");
     STDX_ASSERT(tmp.len == 0);
@@ -173,15 +170,15 @@ void test_stdx_parse_long_all(void) {
     STDX_ASSERT(tmp.len == 0);
 
     tmp = stdx_parse_long_all("foo123");
-    STDX_ASSERT(tmp.len == 1 && (*stdx_da_get(&tmp, long, 0)) == 123);
-    stdx_da_free(tmp);
+    STDX_ASSERT(tmp.len == 1 && (*DARRAY_GET(&tmp, 0)) == 123);
+    STDX_XFREE(*(&tmp.items));
 
     tmp = stdx_parse_long_all("foo123bar-456abc-1");
     STDX_ASSERT(tmp.len == 3
-                && (*stdx_da_get(&tmp, long, 0)) == 123
-                && (*stdx_da_get(&tmp, long, 1)) == -456
-                && (*stdx_da_get(&tmp, long, 2)) == -1);
-    stdx_da_free(tmp);
+                && (*DARRAY_GET(&tmp, 0)) == 123
+                && (*DARRAY_GET(&tmp, 1)) == -456
+                && (*DARRAY_GET(&tmp, 2)) == -1);
+    STDX_XFREE(*(&tmp.items));
 
     STDX_LOG_INF("%s\n", "PASSED...");
 }

@@ -1,6 +1,9 @@
 #ifndef STDX_H
 #define STDX_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif /* __cplusplus */
 
 #define STDX_VERSION_MAJOR  0
 #define STDX_VERSION_MINOR  0
@@ -18,6 +21,8 @@
 #include <string.h>
 #include <stdint.h>
 
+// stdx
+#include "mem.h"
 
 
 /**
@@ -29,12 +34,7 @@
 #endif
 
 
-#define STDX_MALLOC     malloc
-#define STDX_CALLOC     calloc
-#define STDX_REALLOC    realloc
-#define STDX_ASSERT     assert
-#define STDX_FREE       free
-#define STDX_XFREE(p)   do { STDX_FREE((p)); (p) = NULL; } while (0)
+#define STDX_ASSERT(expr)   assert((expr))
 #define STDX_ARRAY_LEN(arr) (sizeof((arr)) / sizeof((arr)[0]))
 
 #ifndef true
@@ -47,38 +47,7 @@
 
 
 // Daynamic Array
-#define STDX_DA_DEF_CAP (20)
-
-#define stdx_da_new(capacity)    \
-    (Stdx_DArr) { NULL, 0, ((capacity) > 0) ? (capacity) : STDX_DA_DEF_CAP }
-
-#define stdx_da_append(da_ptr, item_type, item_ptr)                                             \
-    do {                                                                                        \
-        if (((da_ptr)->len % (da_ptr)->cap) == 0) {                                             \
-            size_t __stdx_da_new_size__ = sizeof(item_type) * ((da_ptr)->cap + (da_ptr)->len);  \
-            (da_ptr)->items = STDX_REALLOC((da_ptr)->items, __stdx_da_new_size__);              \
-            STDX_ASSERT((da_ptr)->items != NULL);                                               \
-        }                                                                                       \
-        item_type *__stdx_da_tmp__ = &((item_type*)(da_ptr)->items)[(da_ptr)->len];             \
-        *__stdx_da_tmp__ = *(item_ptr);                                                         \
-        (da_ptr)->len += 1;                                                                     \
-    } while (0)
-
-#define stdx_da_append_many(da_ptr, item_type, items, items_count)              \
-    do {                                                                        \
-        for (size_t __stdx_i__ = 0; __stdx_i__ < (items_count); __stdx_i__++)   \
-            stdx_da_append((da_ptr), item_type, &(items)[__stdx_i__]);          \
-    } while (0)
-
-#define stdx_da_ptr(da_ptr, item_type) ((item_type*)(da_ptr)->items)
-
-#define stdx_da_get(da_ptr, item_type, idx) \
-    (STDX_ASSERT((idx) >= 0),               \
-    STDX_ASSERT((idx) < ((da_ptr)->len)),   \
-    &(stdx_da_ptr((da_ptr), item_type)[(idx)]))
-
-#define stdx_da_free(da)    \
-    do { STDX_XFREE((da).items); (da).len = 0; } while (0)
+#include "darray.h"
 
 
 // Logging
@@ -117,13 +86,6 @@ typedef int64_t i64;
 typedef long    ssize;
 typedef unsigned long   usize;
 
-// Dynamic array
-typedef struct __stdx_darr {
-    void *items;
-    size_t len;
-    size_t cap;
-} Stdx_DArr;
-
 
 
 /**
@@ -135,7 +97,7 @@ char *stdx_strdup(const char *s) {
         return NULL;
 
     size_t i = 0;
-    char *tmp = STDX_MALLOC((strlen(s) + 1) * sizeof(*tmp));
+    char *tmp = (char*) STDX_MALLOC((strlen(s) + 1) * sizeof(*tmp));
     if (!tmp)
         goto ret;
 
@@ -155,7 +117,7 @@ char *stdx_strndup(const char *s, const long n) {
         return NULL;
 
     long i = 0;
-    char *tmp = STDX_MALLOC((n + 1) * sizeof(*tmp));
+    char *tmp = (char*) STDX_MALLOC((n + 1) * sizeof(*tmp));
     if (!tmp)
         goto ret;
 
@@ -181,8 +143,8 @@ char *stdx_substr(const char *start, const char *end) {
 
 
 char *stdx_find_substr(const char *source, const char *query) {
-    register char *s = (char*)source;
-    register char *q;
+    char *s = (char*)source;
+    char *q;
 
 again:
     q = (char*)query;
@@ -232,13 +194,15 @@ ret:
     return (neg) ? (-(num)) : num;
 }
 
+typedef DARRAY_DEFINE(intlist, int) intlist_t;
+typedef DARRAY_DEFINE(charlist, char) charlist_t;
 
 // Parse all integers in string
-Stdx_DArr stdx_parse_long_all(const char *s) {
+intlist_t stdx_parse_long_all(const char *s) {
     char *tmp = (char*)s;
     long num;
     short neg;
-    Stdx_DArr nums = stdx_da_new(5);
+    intlist_t nums = {0};
 
     while (true) {
         neg = false;
@@ -257,12 +221,15 @@ Stdx_DArr stdx_parse_long_all(const char *s) {
         }
 
         num = (neg) ? (-(num)) : num;
-        stdx_da_append(&nums, long, &num);
+        DARRAY_APPEND(&nums, &num);
     }
 
     return nums;
 }
 
 
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
 
 #endif // STDX_H
