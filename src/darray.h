@@ -1,5 +1,5 @@
-#ifndef APTGIT_DARRAY_H
-#define APTGIT_DARRAY_H
+#ifndef STDX_DARRAY_H
+#define STDX_DARRAY_H
 
 #include "mem.h"
 
@@ -65,4 +65,4 @@
     (assert((idx) >= 0), assert((idx) < (da_ptr)->len), &((da_ptr)->items[(idx)]))
 
 
-#endif /* APTGIT_DARRAY_H */
+#endif /* STDX_DARRAY_H */
