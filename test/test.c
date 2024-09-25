@@ -38,12 +38,12 @@ void test_stdx_darr(void) {
     int stat;
     long num = 10;
 
-    DARRAY_APPEND(&tmp, &num);
-    STDX_ASSERT((*DARRAY_GET(&tmp, 0)) == 10);
+    DA_APPEND(&tmp, &num);
+    STDX_ASSERT((*DA_GET(&tmp, 0)) == 10);
 
     num = 873;
-    DARRAY_APPEND(&tmp, &num);
-    STDX_ASSERT((*DARRAY_GET(&tmp, 1)) == 873);
+    DA_APPEND(&tmp, &num);
+    STDX_ASSERT((*DA_GET(&tmp, 1)) == 873);
 
     STDX_XFREE(*(&tmp.items));
 
@@ -55,7 +55,7 @@ void test_stdx_darr(void) {
 
     char *sample = "Hello World!";
     for (size_t i = 0; i < strlen(sample); i++)
-        DARRAY_APPEND(&tmp2, &sample[i]);
+        DA_APPEND(&tmp2, &sample[i]);
 
     stat = strcmp(tmp2.items, sample);
     STDX_ASSERT(stat == 0);
@@ -170,14 +170,14 @@ void test_stdx_parse_long_all(void) {
     STDX_ASSERT(tmp.len == 0);
 
     tmp = stdx_parse_long_all("foo123");
-    STDX_ASSERT(tmp.len == 1 && (*DARRAY_GET(&tmp, 0)) == 123);
+    STDX_ASSERT(tmp.len == 1 && (*DA_GET(&tmp, 0)) == 123);
     STDX_XFREE(*(&tmp.items));
 
     tmp = stdx_parse_long_all("foo123bar-456abc-1");
     STDX_ASSERT(tmp.len == 3
-                && (*DARRAY_GET(&tmp, 0)) == 123
-                && (*DARRAY_GET(&tmp, 1)) == -456
-                && (*DARRAY_GET(&tmp, 2)) == -1);
+                && (*DA_GET(&tmp, 0)) == 123
+                && (*DA_GET(&tmp, 1)) == -456
+                && (*DA_GET(&tmp, 2)) == -1);
     STDX_XFREE(*(&tmp.items));
 
     STDX_LOG_INF("%s\n", "PASSED...");

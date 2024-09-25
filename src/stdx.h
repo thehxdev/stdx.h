@@ -194,8 +194,8 @@ ret:
     return (neg) ? (-(num)) : num;
 }
 
-typedef DARRAY_DEFINE(intlist, int) intlist_t;
-typedef DARRAY_DEFINE(charlist, char) charlist_t;
+typedef DA_DEFINE(intlist, int) intlist_t;
+typedef DA_DEFINE(charlist, char) charlist_t;
 
 // Parse all integers in string
 intlist_t stdx_parse_long_all(const char *s) {
@@ -221,7 +221,7 @@ intlist_t stdx_parse_long_all(const char *s) {
         }
 
         num = (neg) ? (-(num)) : num;
-        DARRAY_APPEND(&nums, &num);
+        DA_APPEND(&nums, &num);
     }
 
     return nums;
